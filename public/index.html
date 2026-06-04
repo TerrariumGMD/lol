@@ -1,289 +1,195 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>prism's proxy</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
+	<title>Prism Proxy</title>
 
-    :root {
-      --bg: #010101;
-      --fg: #f2f2f2;
-      --muted: #8d8d99;
-      --border: rgba(255,255,255,.12);
-    }
+	<link rel="shortcut icon" content="favicon.webp" />
 
-    body {
-      min-height: 100vh;
-      background: radial-gradient(circle at top, #111 0%, #010101 55%, #000 100%);
-      color: var(--fg);
-      font-family: Arial, sans-serif;
-      overflow: hidden;
-    }
+	<script src="/scram/scramjet.all.js"></script>
+	<script src="/baremux/index.js"></script>
 
-    #stars {
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      pointer-events: none;
-    }
+	<style>
+		* { box-sizing: border-box; }
 
-    .topbar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 64px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 38px;
-      z-index: 5;
-      background: rgba(0,0,0,.65);
-      backdrop-filter: blur(14px);
-      border-bottom: 1px solid var(--border);
-    }
+		body {
+			margin: 0;
+			min-height: 100vh;
+			background:
+				radial-gradient(circle at top, rgba(120,120,255,.22), transparent 35%),
+				linear-gradient(180deg, #08080d, #020204);
+			color: white;
+			font-family: Arial, sans-serif;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			overflow-x: hidden;
+		}
 
-    .logo {
-      color: white;
-      text-decoration: none;
-      font-weight: 700;
-      letter-spacing: .08em;
-      font-size: 15px;
-    }
+		body::before {
+			content: "";
+			position: fixed;
+			inset: 0;
+			background-image: radial-gradient(white 1px, transparent 1px);
+			background-size: 55px 55px;
+			opacity: .12;
+			animation: drift 18s linear infinite;
+			pointer-events: none;
+		}
 
-    .nav a {
-      color: var(--muted);
-      text-decoration: none;
-      margin-left: 28px;
-      font-size: 13px;
-      letter-spacing: .06em;
-    }
+		@keyframes drift {
+			from { transform: translateY(0); }
+			to { transform: translateY(55px); }
+		}
 
-    .nav a:hover { color: white; }
+		.logo-wrapper {
+			position: relative;
+			z-index: 1;
+			text-align: center;
+		}
 
-    main {
-      position: relative;
-      z-index: 2;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 90px 22px 30px;
-    }
+		.logo {
+			width: 180px;
+			max-width: 60vw;
+			filter: drop-shadow(0 0 30px rgba(255,255,255,.25));
+		}
 
-    .hero {
-      width: min(760px, 92vw);
-      text-align: center;
-    }
+		h1 {
+			font-size: clamp(42px, 8vw, 86px);
+			margin: 10px 0;
+			letter-spacing: -4px;
+			text-transform: lowercase;
+		}
 
-    .eyebrow {
-      color: var(--muted);
-      letter-spacing: .35em;
-      text-transform: uppercase;
-      font-size: 11px;
-      margin-bottom: 18px;
-    }
+		.desc {
+			position: relative;
+			z-index: 1;
+			max-width: 620px;
+			text-align: center;
+			color: #aaa;
+			line-height: 1.6;
+			padding: 0 20px;
+		}
 
-    h1 {
-      font-size: clamp(54px, 10vw, 118px);
-      line-height: .9;
-      letter-spacing: -.06em;
-      text-transform: lowercase;
-      text-shadow: 0 0 45px rgba(255,255,255,.28);
-      margin-bottom: 24px;
-      animation: glow 4s ease-in-out infinite;
-    }
+		#sj-form {
+			position: relative;
+			z-index: 1;
+			width: min(680px, 90vw);
+			margin-top: 24px;
+			padding: 18px;
+			border: 1px solid rgba(255,255,255,.14);
+			border-radius: 28px;
+			background: rgba(255,255,255,.06);
+			backdrop-filter: blur(14px);
+			box-shadow: 0 25px 70px rgba(0,0,0,.45);
+		}
 
-    @keyframes glow {
-      0%, 100% { text-shadow: 0 0 35px rgba(255,255,255,.22); }
-      50% { text-shadow: 0 0 70px rgba(255,255,255,.42); }
-    }
+		#sj-address {
+			width: 100%;
+			padding: 18px 22px;
+			border-radius: 999px;
+			border: 1px solid rgba(255,255,255,.18);
+			outline: none;
+			background: rgba(0,0,0,.45);
+			color: white;
+			font-size: 16px;
+		}
 
-    .subtitle {
-      color: var(--muted);
-      max-width: 520px;
-      margin: 0 auto 34px;
-      line-height: 1.6;
-      font-size: 15px;
-    }
+		#sj-address::placeholder { color: #777; }
 
-    .proxy-box {
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,.045);
-      backdrop-filter: blur(18px);
-      border-radius: 28px;
-      padding: 26px;
-      box-shadow: 0 24px 80px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.08);
-    }
+		#sj-address:focus {
+			border-color: white;
+			box-shadow: 0 0 0 4px rgba(255,255,255,.08);
+		}
 
-    form {
-      display: flex;
-      gap: 12px;
-      align-items: center;
-    }
+		#sj-error {
+			color: #ff7373;
+			margin-top: 20px;
+		}
 
-    input {
-      flex: 1;
-      min-width: 0;
-      padding: 17px 20px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.16);
-      outline: none;
-      background: rgba(0,0,0,.35);
-      color: white;
-      font-size: 15px;
-    }
+		#sj-error-code {
+			color: #ff9999;
+			white-space: pre-wrap;
+		}
 
-    input::placeholder { color: #777; }
+		footer {
+			position: fixed;
+			left: 24px;
+			bottom: 20px;
+			z-index: 1;
+			color: #777;
+			font-size: 13px;
+		}
 
-    input:focus {
-      border-color: rgba(255,255,255,.65);
-      box-shadow: 0 0 0 4px rgba(255,255,255,.06);
-    }
+		footer a {
+			color: white;
+			text-decoration: none;
+			margin-right: 18px;
+		}
 
-    button {
-      padding: 17px 28px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.22);
-      background: white;
-      color: black;
-      font-weight: 800;
-      cursor: pointer;
-      letter-spacing: .05em;
-      transition: transform .2s, box-shadow .2s;
-    }
+		footer a:hover { text-decoration: underline; }
 
-    button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 0 30px rgba(255,255,255,.22);
-    }
+		.flex-center {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			flex-direction: column;
+		}
 
-    .quick {
-      margin-top: 18px;
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
+		@media (max-width: 650px) {
+			footer {
+				position: static;
+				margin-top: 60px;
+				text-align: center;
+				padding-bottom: 20px;
+			}
 
-    .quick button {
-      background: rgba(255,255,255,.06);
-      color: white;
-      font-size: 12px;
-      padding: 10px 14px;
-      border-radius: 999px;
-      font-weight: 600;
-    }
+			h1 {
+				letter-spacing: -2px;
+			}
+		}
+	</style>
 
-    footer {
-      position: fixed;
-      bottom: 24px;
-      left: 28px;
-      z-index: 3;
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    @media (max-width: 650px) {
-      .topbar { padding: 0 18px; }
-      .nav { display: none; }
-      form { flex-direction: column; }
-      input, button { width: 100%; }
-    }
-  </style>
+	<script src="register-sw.js" defer></script>
+	<script src="search.js" defer></script>
+	<script src="index.js" defer></script>
 </head>
+
 <body>
-  <canvas id="stars"></canvas>
+	<div title="Scramjet Logo" class="flex-center logo-wrapper header-center">
+		<img class="logo" src="sj.png" alt="Scramjet" />
+		<h1>prism proxy</h1>
+	</div>
 
-  <header class="topbar">
-    <a class="logo" href="/">prism's proxy</a>
-    <nav class="nav">
-      <a href="https://prisms.lol">games</a>
-      <a href="/">proxy</a>
-    </nav>
-  </header>
+	<div class="flex-center desc left-margin">
+		<p>Search or enter a URL</p>
+	</div>
 
-  <main>
-    <section class="hero">
-      <div class="eyebrow">private web portal</div>
-      <h1>prism's proxy</h1>
-      <p class="subtitle">enter a URL below and launch it through the prism gateway.</p>
+	<form id="sj-form" class="flex-center">
+		<input
+			id="sj-search-engine"
+			value="https://www.google.com/search?q=%s"
+			type="hidden"
+		/>
+		<input id="sj-address" type="text" placeholder="Search or enter a website..." />
+	</form>
 
-      <div class="proxy-box">
-        <form id="form">
-          <input id="url" placeholder="search or enter a website..." autocomplete="off" />
-          <button type="submit">Launch</button>
-        </form>
+	<div class="desc left-margin">
+		<p id="sj-error"></p>
+		<pre id="sj-error-code"></pre>
+	</div>
 
-        <div class="quick">
-          <button onclick="go('https://google.com')">Google</button>
-          <button onclick="go('https://youtube.com')">YouTube</button>
-          <button onclick="go('https://discord.com/app')">Discord</button>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer>© 2026 prism's proxy</footer>
-
-  <script>
-    function launch(raw) {
-      let url = raw.trim();
-      if (!url) return;
-
-      if (!url.startsWith("http://") && !url.startsWith("https://")) {
-        if (url.includes(".") && !url.includes(" ")) {
-          url = "https://" + url;
-        } else {
-          url = "https://www.google.com/search?q=" + encodeURIComponent(url);
-        }
-      }
-
-      window.location.href = "/service/" + encodeURIComponent(url);
-    }
-
-    function go(url) {
-      launch(url);
-    }
-
-    document.getElementById("form").addEventListener("submit", function(e) {
-      e.preventDefault();
-      launch(document.getElementById("url").value);
-    });
-
-    const canvas = document.getElementById("stars");
-    const ctx = canvas.getContext("2d");
-    let stars = [];
-
-    function resize() {
-      canvas.width = innerWidth;
-      canvas.height = innerHeight;
-      stars = Array.from({ length: Math.floor((innerWidth * innerHeight) / 2600) }, () => ({
-        x: Math.random() * innerWidth,
-        y: Math.random() * innerHeight,
-        r: Math.random() * 1.6 + .2,
-        a: Math.random() * .8 + .2,
-        s: Math.random() * .015 + .004
-      }));
-    }
-
-    function draw(t) {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      stars.forEach(star => {
-        const alpha = star.a + Math.sin(t * star.s) * .25;
-        ctx.beginPath();
-        ctx.arc(star.x, star.y, star.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255,255,255,${alpha})`;
-        ctx.fill();
-      });
-      requestAnimationFrame(draw);
-    }
-
-    resize();
-    draw(0);
-    addEventListener("resize", resize);
-  </script>
+	<footer>
+		<div>
+			<a href="https://prisms.lol">Games</a>
+			<a href="/">Proxy</a>
+			<a href="credits.html">Credits</a>
+		</div>
+		<div>
+			<span>Prism Proxy &copy; 2026</span>
+		</div>
+	</footer>
 </body>
 </html>
