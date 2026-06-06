@@ -8,30 +8,61 @@
 
 	<script src="/scram/scramjet.all.js"></script>
 	<script src="/baremux/index.js"></script>
+	<script src="https://cdn.jsdelivr.net/gh/VincentGarreau/particles.js/particles.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/gh/mazznoer/colorgrad-js/dist/colorgrad.min.js"></script>
 
 	<style>
+		@font-face {
+			font-family: "Coolvetica";
+			src: url("https://raw.githubusercontent.com/pear/pearweb/master/include/fonts/coolveti.ttf") format("truetype");
+			font-weight: 400;
+			font-style: normal;
+			font-display: swap;
+		}
+
 		* { box-sizing: border-box; margin: 0; padding: 0; }
 
 		:root {
-			--fg: #e8e8e8;
-			--muted: #888899;
-			--border: rgba(255,255,255,.10);
-			--border-hover: rgba(255,255,255,.62);
+			--fg: #f7f2f2;
+			--muted: #b9a7a7;
+			--red: #ff2424;
+			--deep-red: #870000;
+			--dark-red: #230303;
+			--border: rgba(255, 40, 40, .22);
+			--border-hover: rgba(255, 64, 64, .72);
+			--glass: rgba(28, 2, 2, .58);
 		}
 
 		body {
 			min-height: 100vh;
-			background: #010101;
+			background:
+				radial-gradient(circle at 50% -12%, rgba(255, 34, 34, .16), transparent 34%),
+				radial-gradient(circle at 12% 84%, rgba(150, 0, 0, .13), transparent 30%),
+				linear-gradient(135deg, #020000 0%, #090000 45%, #150101 100%);
 			color: var(--fg);
 			font-family: Arial, sans-serif;
 			overflow-x: hidden;
 		}
 
-		#star-canvas {
+		#particles-js {
 			position: fixed;
 			inset: 0;
 			z-index: 0;
 			pointer-events: none;
+		}
+
+		body::before {
+			content: "";
+			position: fixed;
+			inset: 0;
+			z-index: 1;
+			pointer-events: none;
+			background:
+				linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
+				linear-gradient(90deg, rgba(255,255,255,.014) 1px, transparent 1px);
+			background-size: 26px 26px;
+			mask-image: radial-gradient(circle at center, black, transparent 78%);
+			opacity: .42;
 		}
 
 		.topbar {
@@ -40,37 +71,52 @@
 			left: 0;
 			right: 0;
 			z-index: 10;
-			height: 64px;
+			height: 68px;
 			padding: 0 40px;
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
-			background: rgba(1,1,1,.76);
-			backdrop-filter: blur(12px);
-			border-bottom: 1px solid rgba(255,255,255,.08);
+			background: rgba(5,0,0,.74);
+			backdrop-filter: blur(16px) saturate(1.35);
+			border-bottom: 1px solid rgba(255, 34, 34, .22);
+			box-shadow: 0 14px 40px rgba(0,0,0,.42), inset 0 -1px 0 rgba(255,255,255,.045);
 		}
 
 		.logo {
-			font-size: 16px;
-			font-weight: 700;
-			letter-spacing: .05em;
+			font-family: "Coolvetica", Arial, sans-serif;
+			font-size: 23px;
+			font-weight: 400;
+			letter-spacing: .015em;
 			color: white;
 			text-decoration: none;
+			text-shadow: 0 0 16px rgba(255, 34, 34, .62), 0 2px 0 rgba(0,0,0,.55);
 		}
 
 		.nav {
 			display: flex;
-			gap: 30px;
+			gap: 16px;
+			align-items: center;
 		}
 
 		.nav a {
-			color: var(--muted);
+			font-family: "Coolvetica", Arial, sans-serif;
+			color: rgba(255,255,255,.72);
 			text-decoration: none;
-			font-size: 13px;
-			letter-spacing: .05em;
+			font-size: 16px;
+			letter-spacing: .04em;
+			padding: 9px 16px;
+			border-radius: 999px;
+			border: 1px solid transparent;
+			transition: transform .22s ease, color .22s ease, border-color .22s ease, background .22s ease, box-shadow .22s ease;
 		}
 
-		.nav a:hover { color: white; }
+		.nav a:hover {
+			color: white;
+			border-color: rgba(255, 44, 44, .38);
+			background: rgba(255, 36, 36, .08);
+			box-shadow: 0 0 22px rgba(255, 22, 22, .16);
+			transform: translateY(-1px);
+		}
 
 		main {
 			position: relative;
@@ -79,87 +125,235 @@
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			padding: 100px 20px;
+			padding: 112px 20px 92px;
 		}
 
 		.hero {
-			width: min(760px, 92vw);
+			position: relative;
+			width: min(800px, 92vw);
 			text-align: center;
+			padding: 34px;
+			border-radius: 34px;
+			border: 1px solid rgba(255, 45, 45, .17);
+			background:
+				linear-gradient(145deg, rgba(255,255,255,.06), rgba(255,255,255,.018)),
+				radial-gradient(circle at 72% 18%, rgba(255, 36, 36, .20), transparent 36%),
+				rgba(12, 0, 0, .34);
+			backdrop-filter: blur(14px) saturate(1.2);
+			box-shadow:
+				0 28px 90px rgba(0,0,0,.58),
+				0 0 70px rgba(255, 0, 0, .10),
+				inset 0 1px 0 rgba(255,255,255,.08);
+			overflow: hidden;
+		}
+
+		.hero::after {
+			content: "";
+			position: absolute;
+			inset: 1px;
+			border-radius: inherit;
+			pointer-events: none;
+			background: linear-gradient(120deg, transparent 4%, rgba(255,255,255,.11) 28%, transparent 42%);
+			opacity: .28;
 		}
 
 		.hero-glow {
 			position: absolute;
-			width: 550px;
-			height: 250px;
-			background: radial-gradient(circle, rgba(255,255,255,.12), transparent 70%);
-			filter: blur(20px);
+			width: 620px;
+			height: 300px;
+			background: radial-gradient(circle, rgba(255, 24, 24, .30), transparent 72%);
+			filter: blur(22px);
 			left: 50%;
-			top: 35%;
+			top: 33%;
 			transform: translate(-50%, -50%);
 			pointer-events: none;
 		}
 
 		h1 {
-			font-size: clamp(64px, 10vw, 130px);
-			line-height: .9;
-			letter-spacing: -.08em;
+			font-family: "Coolvetica", Arial, sans-serif;
+			font-size: clamp(42px, 7vw, 86px);
+			font-weight: 400;
+			line-height: .92;
+			letter-spacing: -.035em;
 			color: white;
 			text-transform: lowercase;
-			text-shadow: 0 0 40px rgba(255,255,255,.22);
-			margin-bottom: 20px;
+			text-shadow: 0 0 14px rgba(255, 34, 34, .34), 0 0 34px rgba(255, 0, 0, .16), 0 4px 0 rgba(0,0,0,.48);
+			margin-bottom: 16px;
 			position: relative;
+			z-index: 2;
 		}
 
 		.subtitle {
+			position: relative;
+			z-index: 2;
 			color: var(--muted);
-			font-size: 16px;
+			font-size: 17px;
 			margin-bottom: 32px;
 		}
 
 		#sj-form {
+			position: relative;
+			z-index: 2;
 			width: min(700px, 92vw);
 			margin: 0 auto;
-			padding: 18px;
-			border-radius: 28px;
+			padding: 12px;
+			border-radius: 999px;
 			border: 1px solid var(--border);
-			background: rgba(255,255,255,.045);
-			backdrop-filter: blur(16px);
-			box-shadow: inset 0 1px 0 rgba(255,255,255,.05), 0 20px 60px rgba(0,0,0,.45);
+			background:
+				radial-gradient(circle at 75% 0%, rgba(255, 34, 34, .19), transparent 38%),
+				linear-gradient(145deg, rgba(255,255,255,.075), rgba(255,255,255,.024)),
+				var(--glass);
+			backdrop-filter: blur(18px);
+			box-shadow:
+				inset 0 1px 0 rgba(255,255,255,.09),
+				0 22px 70px rgba(0,0,0,.58),
+				0 0 34px rgba(255, 0, 0, .13);
+			transition: transform .24s ease, box-shadow .24s ease, border-color .24s ease;
+		}
+
+		#sj-form:hover {
+			transform: translateY(-2px);
+			border-color: rgba(255, 44, 44, .38);
+			box-shadow:
+				inset 0 1px 0 rgba(255,255,255,.12),
+				0 28px 84px rgba(0,0,0,.66),
+				0 0 48px rgba(255, 0, 0, .20);
 		}
 
 		#sj-address {
 			width: 100%;
-			padding: 18px 22px;
+			padding: 18px 24px;
 			border-radius: 999px;
-			border: 1px solid rgba(255,255,255,.16);
+			border: 1px solid rgba(255, 42, 42, .18);
 			outline: none;
-			background: rgba(255,255,255,.03);
+			background:
+				linear-gradient(145deg, rgba(0,0,0,.44), rgba(70,0,0,.18));
 			color: white;
 			font-size: 16px;
+			box-shadow: inset 0 1px 18px rgba(0,0,0,.36);
 		}
 
-		#sj-address::placeholder { color: #777; }
+		#sj-address::placeholder { color: rgba(255,255,255,.44); }
 
 		#sj-address:focus {
 			border-color: var(--border-hover);
-			box-shadow: 0 0 0 4px rgba(255,255,255,.04);
+			box-shadow: 0 0 0 4px rgba(255, 28, 28, .08), inset 0 1px 18px rgba(0,0,0,.36);
 		}
 
 		#sj-error {
+			position: relative;
+			z-index: 2;
 			margin-top: 20px;
 			color: #ff6b6b;
 		}
 
 		#sj-error-code {
-			color: #ff9b9b;
+			position: relative;
+			z-index: 2;
+			color: #ffaaaa;
 			white-space: pre-wrap;
 		}
 
+		.proxy-browser {
+			position: fixed;
+			top: 0;
+			left: 0;
+			right: 0;
+			z-index: 10000;
+			height: 74px;
+			display: none;
+			background: #202020;
+			border-bottom: 1px solid rgba(255,255,255,.14);
+			box-shadow: 0 12px 34px rgba(0,0,0,.45);
+			font-family: Arial, sans-serif;
+		}
+
+		body.proxy-open .proxy-browser { display: block; }
+		body.proxy-open .topbar,
+		body.proxy-open main,
+		body.proxy-open footer,
+		body.proxy-open #particles-js { display: none; }
+
+		.browser-tabs {
+			height: 34px;
+			display: flex;
+			align-items: end;
+			padding: 0 10px;
+			gap: 8px;
+		}
+
+		.browser-tab {
+			height: 30px;
+			min-width: 190px;
+			max-width: 260px;
+			display: flex;
+			align-items: center;
+			gap: 8px;
+			padding: 0 12px;
+			border-radius: 10px 10px 0 0;
+			background: #2c2c2c;
+			border-top: 1px solid rgba(255,255,255,.10);
+			border-left: 1px solid rgba(255,255,255,.06);
+			border-right: 1px solid rgba(255,255,255,.06);
+			color: #f5f5f5;
+			font-size: 12px;
+		}
+
+		.browser-favicon { opacity: .8; font-size: 13px; }
+		.browser-title { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+		.browser-close { color: #aaa; font-size: 15px; cursor: pointer; line-height: 1; }
+		.browser-plus { color: #d6d6d6; font-size: 19px; line-height: 1; padding-bottom: 5px; }
+
+		.browser-controls {
+			height: 40px;
+			display: flex;
+			align-items: center;
+			gap: 8px;
+			padding: 6px 14px;
+			background: #252525;
+		}
+
+		.browser-btn {
+			width: 28px;
+			height: 28px;
+			display: grid;
+			place-items: center;
+			border: 0;
+			border-radius: 8px;
+			background: transparent;
+			color: #cfcfcf;
+			cursor: pointer;
+			font-size: 17px;
+		}
+
+		.browser-btn:hover { background: rgba(255,255,255,.08); color: white; }
+
+		.browser-address {
+			flex: 1;
+			height: 30px;
+			border: 1px solid rgba(255,255,255,.12);
+			border-radius: 999px;
+			background: #3a3a3a;
+			color: white;
+			outline: none;
+			padding: 0 16px;
+			font-size: 14px;
+		}
+
+		.browser-address:focus {
+			background: #303030;
+			border-color: rgba(255, 70, 70, .55);
+			box-shadow: 0 0 0 3px rgba(255, 30, 30, .12);
+		}
+
+		.browser-menu { color: #d0d0d0; letter-spacing: 2px; padding: 0 4px; }
+
 		#sj-frame {
 			position: fixed;
-			inset: 0;
+			top: 74px;
+			left: 0;
 			width: 100vw;
-			height: 100vh;
+			height: calc(100vh - 74px);
 			border: none;
 			z-index: 9999;
 			background: white;
@@ -184,20 +378,43 @@
 		footer a {
 			color: white;
 			text-decoration: none;
+			text-shadow: 0 0 14px rgba(255, 34, 34, .42);
 		}
 
-		footer a:hover { text-decoration: underline; }
+		footer a:hover { color: #ff3a3a; }
 
 		@media (max-width: 650px) {
 			.topbar { padding: 0 18px; }
-			.nav { gap: 18px; }
+			.logo { font-size: 20px; }
+			.nav { gap: 8px; }
+			.nav a { padding: 8px 10px; }
 			h1 { font-size: 64px; }
+			.hero { padding: 26px 16px; }
 		}
 	</style>
 </head>
 
 <body>
-	<canvas id="star-canvas"></canvas>
+	<div id="particles-js"></div>
+
+	<div class="proxy-browser" id="proxy-browser" aria-label="Proxy browser controls">
+		<div class="browser-tabs">
+			<div class="browser-tab">
+				<span class="browser-favicon">◎</span>
+				<span class="browser-title" id="browser-title">New Tab</span>
+				<span class="browser-close" id="browser-close" title="Close">×</span>
+			</div>
+			<div class="browser-plus">+</div>
+		</div>
+		<div class="browser-controls">
+			<button class="browser-btn" id="browser-back" title="Back" type="button">‹</button>
+			<button class="browser-btn" id="browser-forward" title="Forward" type="button">›</button>
+			<button class="browser-btn" id="browser-reload" title="Reload" type="button">↻</button>
+			<input class="browser-address" id="browser-address" type="text" spellcheck="false" autocomplete="off" />
+			<button class="browser-btn" id="browser-home" title="Home" type="button">⌂</button>
+			<span class="browser-menu">⋮</span>
+		</div>
+	</div>
 
 	<header class="topbar">
 		<a href="/" class="logo">prism's proxy</a>
@@ -233,41 +450,93 @@
 	<script src="search.js"></script>
 
 	<script>
-		const canvas = document.getElementById("star-canvas");
-		const ctx = canvas.getContext("2d");
-		let stars = [];
-
-		function resize() {
-			canvas.width = window.innerWidth;
-			canvas.height = window.innerHeight;
-			stars = Array.from({ length: Math.floor((canvas.width * canvas.height) / 2600) }, () => ({
-				x: Math.random() * canvas.width,
-				y: Math.random() * canvas.height,
-				r: Math.random() * 1.25 + 0.25,
-				a: Math.random() * 0.55 + 0.15
-			}));
+		if (window.particlesJS) {
+			particlesJS("particles-js", {
+				particles: {
+					number: { value: 76, density: { enable: true, value_area: 900 } },
+					color: { value: "#ff2222" },
+					shape: { type: "circle" },
+					opacity: { value: 0.45, random: true },
+					size: { value: 2.2, random: true },
+					line_linked: { enable: true, distance: 135, color: "#ff2222", opacity: 0.16, width: 1 },
+					move: { enable: true, speed: 1.25, direction: "none", random: true, straight: false, out_mode: "out", bounce: false }
+				},
+				interactivity: {
+					detect_on: "canvas",
+					events: { onhover: { enable: true, mode: "grab" }, onclick: { enable: true, mode: "push" }, resize: true },
+					modes: { grab: { distance: 145, line_linked: { opacity: 0.34 } }, push: { particles_nb: 3 } }
+				},
+				retina_detect: true
+			});
 		}
-
-		function draw() {
-			ctx.clearRect(0, 0, canvas.width, canvas.height);
-			for (const star of stars) {
-				ctx.beginPath();
-				ctx.arc(star.x, star.y, star.r, 0, Math.PI * 2);
-				ctx.fillStyle = `rgba(255,255,255,${star.a})`;
-				ctx.fill();
-			}
-			requestAnimationFrame(draw);
-		}
-
-		resize();
-		draw();
-		window.addEventListener("resize", resize);
 
 		const form = document.getElementById("sj-form");
 		const address = document.getElementById("sj-address");
 		const searchEngine = document.getElementById("sj-search-engine");
 		const error = document.getElementById("sj-error");
 		const errorCode = document.getElementById("sj-error-code");
+		const browserAddress = document.getElementById("browser-address");
+		const browserTitle = document.getElementById("browser-title");
+		const browserBack = document.getElementById("browser-back");
+		const browserForward = document.getElementById("browser-forward");
+		const browserReload = document.getElementById("browser-reload");
+		const browserHome = document.getElementById("browser-home");
+		const browserClose = document.getElementById("browser-close");
+		let activeFrame = null;
+		let activeRawUrl = "";
+
+		function titleFromUrl(value) {
+			try { return new URL(value).hostname.replace(/^www\./, ""); }
+			catch { return value || "New Tab"; }
+		}
+
+		async function openProxy(rawValue) {
+			const raw = (rawValue || "").trim();
+			if (!raw) return;
+
+			try {
+				await registerSW();
+			} catch (err) {
+				error.textContent = "Failed to register service worker.";
+				errorCode.textContent = err.toString();
+				return;
+			}
+
+			const url = search(raw, searchEngine.value);
+			activeRawUrl = url;
+			browserAddress.value = url;
+			browserTitle.textContent = titleFromUrl(url);
+
+			const wispUrl =
+				(location.protocol === "https:" ? "wss" : "ws") +
+				"://" +
+				location.host +
+				"/wisp/";
+
+			if ((await connection.getTransport()) !== "/libcurl/index.mjs") {
+				await connection.setTransport("/libcurl/index.mjs", [
+					{ websocket: wispUrl },
+				]);
+			}
+
+			if (!activeFrame) {
+				activeFrame = scramjet.createFrame();
+				activeFrame.frame.id = "sj-frame";
+				document.body.appendChild(activeFrame.frame);
+			}
+
+			document.body.classList.add("proxy-open");
+			activeFrame.go(url);
+		}
+
+		function closeProxy() {
+			document.body.classList.remove("proxy-open");
+			if (activeFrame?.frame) {
+				activeFrame.frame.remove();
+			}
+			activeFrame = null;
+			activeRawUrl = "";
+		}
 
 		const { ScramjetController } = $scramjetLoadController();
 
@@ -283,36 +552,33 @@
 
 		const connection = new BareMux.BareMuxConnection("/baremux/worker.js");
 
-		form.addEventListener("submit", async (event) => {
+		form.addEventListener("submit", (event) => {
 			event.preventDefault();
-
-			try {
-				await registerSW();
-			} catch (err) {
-				error.textContent = "Failed to register service worker.";
-				errorCode.textContent = err.toString();
-				return;
-			}
-
-			const url = search(address.value, searchEngine.value);
-
-			const wispUrl =
-				(location.protocol === "https:" ? "wss" : "ws") +
-				"://" +
-				location.host +
-				"/wisp/";
-
-			if ((await connection.getTransport()) !== "/libcurl/index.mjs") {
-				await connection.setTransport("/libcurl/index.mjs", [
-					{ websocket: wispUrl },
-				]);
-			}
-
-			const frame = scramjet.createFrame();
-			frame.frame.id = "sj-frame";
-			document.body.appendChild(frame.frame);
-			frame.go(url);
+			openProxy(address.value);
 		});
+
+		browserAddress.addEventListener("keydown", (event) => {
+			if (event.key === "Enter") {
+				event.preventDefault();
+				openProxy(browserAddress.value);
+			}
+		});
+
+		browserBack.addEventListener("click", () => {
+			try { activeFrame?.frame?.contentWindow?.history?.back(); } catch {}
+		});
+
+		browserForward.addEventListener("click", () => {
+			try { activeFrame?.frame?.contentWindow?.history?.forward(); } catch {}
+		});
+
+		browserReload.addEventListener("click", () => {
+			try { activeFrame?.frame?.contentWindow?.location?.reload(); }
+			catch { if (activeRawUrl) openProxy(activeRawUrl); }
+		});
+
+		browserHome.addEventListener("click", closeProxy);
+		browserClose.addEventListener("click", closeProxy);
 	</script>
 </body>
 </html>
