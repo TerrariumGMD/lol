@@ -262,9 +262,15 @@
 			z-index: 10000;
 			height: 74px;
 			display: none;
-			background: #202020;
-			border-bottom: 1px solid rgba(255,255,255,.14);
-			box-shadow: 0 12px 34px rgba(0,0,0,.45);
+			background:
+				radial-gradient(circle at 92% 0%, rgba(255, 38, 38, .34), transparent 42%),
+				radial-gradient(circle at 0% 100%, rgba(120, 0, 0, .28), transparent 52%),
+				linear-gradient(180deg, #260000 0%, #120000 42%, #050505 100%);
+			border-bottom: 1px solid rgba(255, 52, 52, .26);
+			box-shadow:
+				0 12px 34px rgba(0,0,0,.55),
+				0 0 32px rgba(255, 0, 0, .14),
+				inset 0 1px 0 rgba(255,255,255,.06);
 			font-family: Arial, sans-serif;
 		}
 
@@ -291,10 +297,11 @@
 			gap: 8px;
 			padding: 0 12px;
 			border-radius: 10px 10px 0 0;
-			background: #2c2c2c;
-			border-top: 1px solid rgba(255,255,255,.10);
-			border-left: 1px solid rgba(255,255,255,.06);
-			border-right: 1px solid rgba(255,255,255,.06);
+			background:
+				linear-gradient(180deg, rgba(90, 6, 6, .96), rgba(22, 0, 0, .96));
+			border-top: 1px solid rgba(255, 86, 86, .22);
+			border-left: 1px solid rgba(255, 86, 86, .14);
+			border-right: 1px solid rgba(255, 86, 86, .14);
 			color: #f5f5f5;
 			font-size: 12px;
 		}
@@ -310,7 +317,8 @@
 			align-items: center;
 			gap: 8px;
 			padding: 6px 14px;
-			background: #252525;
+			background:
+				linear-gradient(180deg, rgba(42, 0, 0, .92), rgba(8, 8, 8, .96));
 		}
 
 		.browser-btn {
@@ -320,20 +328,30 @@
 			place-items: center;
 			border: 0;
 			border-radius: 8px;
-			background: transparent;
-			color: #cfcfcf;
+			background:
+				linear-gradient(180deg, rgba(255, 46, 46, .10), rgba(15, 15, 15, .86));
+			color: #f5dede;
+			border: 1px solid rgba(255, 68, 68, .14);
 			cursor: pointer;
 			font-size: 17px;
 		}
 
-		.browser-btn:hover { background: rgba(255,255,255,.08); color: white; }
+		.browser-btn:hover {
+			background:
+				linear-gradient(180deg, rgba(255, 54, 54, .22), rgba(25, 0, 0, .92));
+			color: white;
+			border-color: rgba(255, 80, 80, .42);
+			box-shadow: 0 0 16px rgba(255, 0, 0, .18);
+		}
 
 		.browser-address {
 			flex: 1;
 			height: 30px;
-			border: 1px solid rgba(255,255,255,.12);
+			border: 1px solid rgba(255, 76, 76, .22);
 			border-radius: 999px;
-			background: #3a3a3a;
+			background:
+				radial-gradient(circle at 88% 50%, rgba(255, 30, 30, .14), transparent 34%),
+				linear-gradient(180deg, rgba(35, 0, 0, .96), rgba(8, 8, 8, .96));
 			color: white;
 			outline: none;
 			padding: 0 16px;
@@ -341,12 +359,14 @@
 		}
 
 		.browser-address:focus {
-			background: #303030;
-			border-color: rgba(255, 70, 70, .55);
-			box-shadow: 0 0 0 3px rgba(255, 30, 30, .12);
+			background:
+				radial-gradient(circle at 88% 50%, rgba(255, 36, 36, .20), transparent 36%),
+				linear-gradient(180deg, rgba(50, 0, 0, .98), rgba(10, 10, 10, .98));
+			border-color: rgba(255, 70, 70, .60);
+			box-shadow: 0 0 0 3px rgba(255, 30, 30, .12), 0 0 24px rgba(255, 0, 0, .10);
 		}
 
-		.browser-menu { color: #d0d0d0; letter-spacing: 2px; padding: 0 4px; }
+		.browser-menu { color: #ffdada; letter-spacing: 2px; padding: 0 4px; }
 
 		#sj-frame {
 			position: fixed;
