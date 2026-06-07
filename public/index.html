@@ -131,6 +131,21 @@
 		#sj-error { margin-top: 20px; color: #ff6b6b; }
 		#sj-error-code { color: #ffaaaa; white-space: pre-wrap; }
 
+		.prism-status-card {
+			position: relative; z-index: 2; width: min(700px, 92vw); margin: 18px auto 0;
+			padding: 13px 16px; border: 1px solid rgba(255, 50, 50, .20); border-radius: 22px;
+			display: flex; align-items: center; justify-content: space-between; gap: 14px; text-align: left;
+			background: radial-gradient(circle at 82% 0%, rgba(255, 34, 34, .18), transparent 38%), linear-gradient(145deg, rgba(255,255,255,.055), rgba(255,255,255,.018)), rgba(10,0,0,.52);
+			box-shadow: inset 0 1px 0 rgba(255,255,255,.07), 0 18px 52px rgba(0,0,0,.38), 0 0 28px rgba(255,0,0,.08);
+			cursor: pointer; user-select: none; transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease, background .22s ease;
+		}
+		.prism-status-card:hover { transform: translateY(-2px); border-color: rgba(255, 70, 70, .42); box-shadow: inset 0 1px 0 rgba(255,255,255,.10), 0 24px 68px rgba(0,0,0,.46), 0 0 38px rgba(255,0,0,.15); }
+		.prism-status-copy strong { display: block; font-family: "Coolvetica", Arial, sans-serif; font-weight: 400; font-size: 22px; color: white; text-shadow: 0 0 16px rgba(255, 0, 0, .34); }
+		.prism-status-copy span { display: block; margin-top: 2px; font-size: 13px; color: rgba(255,255,255,.56); }
+		.prism-status-pill { flex: 0 0 auto; padding: 8px 13px; border-radius: 999px; border: 1px solid rgba(255,255,255,.12); color: rgba(255,255,255,.70); background: rgba(255,255,255,.045); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; }
+		.prism-status-card.active { border-color: rgba(255, 70, 70, .58); background: radial-gradient(circle at 82% 0%, rgba(255, 34, 34, .28), transparent 40%), linear-gradient(145deg, rgba(255,255,255,.075), rgba(255,255,255,.02)), rgba(18,0,0,.68); }
+		.prism-status-card.active .prism-status-pill { color: #fff; border-color: rgba(255, 80, 80, .46); background: linear-gradient(135deg, #ff3232, #740000); box-shadow: 0 0 20px rgba(255,0,0,.22); }
+
 		.proxy-browser {
 			position: fixed; top: 0; left: 0; right: 0; z-index: 10000;
 			height: 80px; display: none; overflow: visible;
@@ -242,6 +257,7 @@
 			<div class="setting-row"><span>Loading speed indicators</span><label class="switch"><input type="checkbox" data-setting="loadIndicators" checked><span class="slider"></span></label></div>
 			<div class="setting-row"><span>FPS counter</span><label class="switch"><input type="checkbox" data-setting="fpsCounter" checked><span class="slider"></span></label></div>
 			<div class="setting-row"><span>Debug stats overlay</span><label class="switch"><input type="checkbox" data-setting="debugOverlay" checked><span class="slider"></span></label></div>
+			<div class="setting-row"><span>Prism status box<small>Manual on/off status overlay</small></span><label class="switch"><input type="checkbox" data-setting="prismStatus"><span class="slider"></span></label></div>
 			<div class="setting-row"><span>Toggle ad blocking</span><label class="switch"><input type="checkbox" data-setting="adBlocking"><span class="slider"></span></label></div>
 			<div class="setting-row"><span>Toggle image loading</span><label class="switch"><input type="checkbox" data-setting="imageLoading" checked><span class="slider"></span></label></div>
 			<div class="setting-row"><span>Cache controls</span><label class="switch"><input type="checkbox" data-setting="cacheControls" checked><span class="slider"></span></label></div>
@@ -280,6 +296,10 @@
 				<input id="sj-search-engine" value="https://www.google.com/search?q=%s" type="hidden" />
 				<input id="sj-address" type="text" placeholder="search or enter a website..." />
 			</form>
+			<button class="prism-status-card" id="prism-status-card" type="button" aria-pressed="false">
+				<span class="prism-status-copy"><strong>prism status</strong><span>click to turn the live stats overlay on or off</span></span>
+				<span class="prism-status-pill" id="prism-status-pill">off</span>
+			</button>
 			<p id="sj-error"></p><pre id="sj-error-code"></pre>
 		</section>
 	</main>
@@ -314,6 +334,8 @@
 		const settingsPanel = document.getElementById("settings-panel");
 		const settingsClose = document.getElementById("settings-close");
 		const statsOverlay = document.getElementById("stats-overlay");
+		const prismStatusCard = document.getElementById("prism-status-card");
+		const prismStatusPill = document.getElementById("prism-status-pill");
 		const themeSelect = document.getElementById("theme-select");
 		const transportSelect = document.getElementById("transport-select");
 		const searchEngineSelect = document.getElementById("search-engine-select");
@@ -321,7 +343,7 @@
 		const defaultSettings = {
 			disableAnimations: false, keyboardShortcuts: true, tabSystem: true, bookmarks: true, searchHistory: true,
 			connectionIndicator: true, autoReconnect: true, prefetching: false, performanceMode: false,
-			loadIndicators: true, fpsCounter: true, debugOverlay: true, adBlocking: false, imageLoading: true,
+			loadIndicators: true, fpsCounter: true, debugOverlay: true, prismStatus: false, adBlocking: false, imageLoading: true,
 			cacheControls: true, healthMonitor: true, backendStatus: true, serverRegion: true, pageLoadTimer: true,
 			requestCounter: true, serviceWorkerStatus: true, theme: "prism", transport: "/libcurl/index.mjs", searchEngine: "https://www.google.com/search?q=%s"
 		};
@@ -339,7 +361,11 @@
 		function applySettings() {
 			document.body.dataset.theme = settings.theme || "prism";
 			document.body.classList.toggle("animations-off", !!settings.disableAnimations || !!settings.performanceMode);
-			statsOverlay.classList.toggle("show", !!settings.debugOverlay || !!settings.fpsCounter || !!settings.loadIndicators);
+			const statusEnabled = !!settings.prismStatus;
+			statsOverlay.classList.toggle("show", statusEnabled && (!!settings.debugOverlay || !!settings.fpsCounter || !!settings.loadIndicators));
+			prismStatusCard?.classList.toggle("active", statusEnabled);
+			if (prismStatusCard) prismStatusCard.setAttribute("aria-pressed", statusEnabled ? "true" : "false");
+			if (prismStatusPill) prismStatusPill.textContent = statusEnabled ? "on" : "off";
 			searchEngine.value = settings.searchEngine || defaultSettings.searchEngine;
 			searchEngineSelect.value = searchEngine.value;
 			transportSelect.value = settings.transport || defaultSettings.transport;
@@ -452,6 +478,7 @@
 		}
 
 		form.addEventListener("submit", (event) => { event.preventDefault(); openProxy(address.value); });
+		prismStatusCard?.addEventListener("click", () => { settings.prismStatus = !settings.prismStatus; saveSettings(); applySettings(); updateStats(); });
 		browserAddress.addEventListener("keydown", (event) => { if (event.key === "Enter") { event.preventDefault(); openProxy(browserAddress.value, activeTab()); } });
 		browserPlus.addEventListener("click", () => createTab("https://www.google.com", true));
 		browserBack.addEventListener("click", () => { try { activeTab()?.frame?.frame?.contentWindow?.history?.back(); } catch {} });
