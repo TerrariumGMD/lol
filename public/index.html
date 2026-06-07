@@ -394,6 +394,21 @@
 			saveSettings();
 		}
 
+		function getSearchEngineHome(engine = getSearchEngine()) {
+			const value = engine || defaultSettings.searchEngine;
+			if (value.includes("duckduckgo.com")) return "https://duckduckgo.com/";
+			if (value.includes("search.brave.com")) return "https://search.brave.com/";
+			if (value.includes("startpage.com")) return "https://www.startpage.com/";
+			if (value.includes("google.com")) return "https://www.google.com/";
+			try {
+				const cleaned = value.replace("%s", "").replace(/[?&](q|query)=$/, "");
+				const url = new URL(cleaned);
+				return url.origin + "/";
+			} catch {
+				return "https://www.google.com/";
+			}
+		}
+
 		const { ScramjetController } = $scramjetLoadController();
 		const scramjet = new ScramjetController({ files: { wasm: "/scram/scramjet.wasm.wasm", all: "/scram/scramjet.all.js", sync: "/scram/scramjet.sync.js" } });
 		scramjet.init();
@@ -436,7 +451,7 @@
 			renderTabs();
 		}
 
-		function createTab(url = "https://www.google.com", openImmediately = true) {
+		function createTab(url = getSearchEngineHome(), openImmediately = true) {
 			const tab = { id: "tab-" + (++tabCounter), title: titleFromUrl(url), rawUrl: url, frame: null, history: [], historyIndex: -1 };
 			tabs.push(tab);
 			activeTabId = tab.id;
@@ -491,7 +506,7 @@
 		form.addEventListener("submit", (event) => { event.preventDefault(); openProxy(address.value); });
 		prismStatusCard?.addEventListener("click", () => { settings.prismStatus = !settings.prismStatus; saveSettings(); applySettings(); updateStats(); });
 		browserAddress.addEventListener("keydown", (event) => { if (event.key === "Enter") { event.preventDefault(); openProxy(browserAddress.value, activeTab()); } });
-		browserPlus.addEventListener("click", () => createTab("https://www.google.com", true));
+		browserPlus.addEventListener("click", () => createTab(getSearchEngineHome(), true));
 		browserBack.addEventListener("click", () => { try { activeTab()?.frame?.frame?.contentWindow?.history?.back(); } catch {} });
 		browserForward.addEventListener("click", () => { try { activeTab()?.frame?.frame?.contentWindow?.history?.forward(); } catch {} });
 		browserReload.addEventListener("click", () => { const tab = activeTab(); try { tab?.frame?.frame?.contentWindow?.location?.reload(); } catch { if (tab?.rawUrl) openProxy(tab.rawUrl, tab); } });
@@ -502,7 +517,7 @@
 		document.addEventListener("keydown", (event) => {
 			if (!settings.keyboardShortcuts) return;
 			if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "l") { event.preventDefault(); browserAddress.focus(); browserAddress.select(); }
-			if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "t") { event.preventDefault(); createTab("https://www.google.com", true); }
+			if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "t") { event.preventDefault(); createTab(getSearchEngineHome(), true); }
 			if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "r") { event.preventDefault(); browserReload.click(); }
 		});
 
