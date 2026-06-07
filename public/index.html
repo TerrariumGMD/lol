@@ -366,8 +366,9 @@
 			prismStatusCard?.classList.toggle("active", statusEnabled);
 			if (prismStatusCard) prismStatusCard.setAttribute("aria-pressed", statusEnabled ? "true" : "false");
 			if (prismStatusPill) prismStatusPill.textContent = statusEnabled ? "on" : "off";
-			searchEngine.value = settings.searchEngine || defaultSettings.searchEngine;
-			searchEngineSelect.value = searchEngine.value;
+			const activeEngine = settings.searchEngine || defaultSettings.searchEngine;
+			if (searchEngine) searchEngine.value = activeEngine;
+			if (searchEngineSelect) searchEngineSelect.value = activeEngine;
 			transportSelect.value = settings.transport || defaultSettings.transport;
 			themeSelect.value = settings.theme || "prism";
 			document.querySelectorAll("[data-setting]").forEach(input => { input.checked = settings[input.dataset.setting] !== false; });
@@ -376,12 +377,22 @@
 		function bindSettings() {
 			document.querySelectorAll("[data-setting]").forEach(input => input.addEventListener("change", () => { settings[input.dataset.setting] = input.checked; saveSettings(); applySettings(); }));
 			themeSelect.addEventListener("change", () => { settings.theme = themeSelect.value; saveSettings(); applySettings(); });
-			searchEngineSelect.addEventListener("change", () => { settings.searchEngine = searchEngineSelect.value; saveSettings(); applySettings(); });
+			searchEngineSelect.addEventListener("change", () => { setSearchEngine(searchEngineSelect.value); applySettings(); });
 			transportSelect.addEventListener("change", () => { settings.transport = transportSelect.value; saveSettings(); applySettings(); });
 		}
 		function transportName(path) { return path?.includes("epoxy") ? "epoxy" : path?.includes("bare") ? "bare" : "libcurl"; }
 		function titleFromUrl(value) { try { return new URL(value).hostname.replace(/^www\./, ""); } catch { return value || "New Tab"; } }
 		function activeTab() { return tabs.find(t => t.id === activeTabId) || null; }
+		function getSearchEngine() {
+			return searchEngineSelect?.value || searchEngine?.value || settings.searchEngine || defaultSettings.searchEngine;
+		}
+		function setSearchEngine(engine) {
+			const nextEngine = engine || defaultSettings.searchEngine;
+			settings.searchEngine = nextEngine;
+			if (searchEngine) searchEngine.value = nextEngine;
+			if (searchEngineSelect && searchEngineSelect.value !== nextEngine) searchEngineSelect.value = nextEngine;
+			saveSettings();
+		}
 
 		const { ScramjetController } = $scramjetLoadController();
 		const scramjet = new ScramjetController({ files: { wasm: "/scram/scramjet.wasm.wasm", all: "/scram/scramjet.all.js", sync: "/scram/scramjet.sync.js" } });
@@ -403,7 +414,7 @@
 			if (!raw) return;
 			const start = performance.now();
 			try { await registerSW(); } catch (err) { error.textContent = "Failed to register service worker."; errorCode.textContent = err.toString(); return; }
-			const url = search(raw, settings.searchEngine || searchEngine.value);
+			const url = search(raw, getSearchEngine());
 			await setTransport();
 			let tab = existingTab || activeTab();
 			if (!tab) tab = createTab(url, false);
