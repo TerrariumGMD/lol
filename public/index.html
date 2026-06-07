@@ -31,6 +31,25 @@
 			--border: rgba(255, 40, 40, .22);
 			--border-hover: rgba(255, 64, 64, .72);
 			--glass: rgba(28, 2, 2, .58);
+			--chrome-bg: linear-gradient(180deg, #260000 0%, #130000 48%, #080808 100%);
+			--chrome-panel: rgba(18, 0, 0, .88);
+			--chrome-border: rgba(255, 40, 40, .24);
+		}
+
+		body[data-theme="light"] {
+			--fg: #1b1111;
+			--muted: #5e4d4d;
+			--glass: rgba(255,255,255,.72);
+			--chrome-bg: linear-gradient(180deg, #ffffff 0%, #f3eded 100%);
+			--chrome-panel: rgba(255,255,255,.92);
+			--chrome-border: rgba(160,0,0,.22);
+			background: radial-gradient(circle at top, rgba(255,70,70,.16), transparent 35%), #f5eeee;
+		}
+
+		body[data-theme="dark"] {
+			--chrome-bg: linear-gradient(180deg, #232323 0%, #161616 100%);
+			--chrome-panel: rgba(30,30,30,.92);
+			--chrome-border: rgba(255,255,255,.14);
 		}
 
 		body {
@@ -44,12 +63,9 @@
 			overflow-x: hidden;
 		}
 
-		#particles-js {
-			position: fixed;
-			inset: 0;
-			z-index: 0;
-			pointer-events: none;
-		}
+		#particles-js { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+		body.animations-off *, body.animations-off *::before, body.animations-off *::after { animation: none !important; transition: none !important; }
+		body.animations-off #particles-js { display: none !important; }
 
 		body::before {
 			content: "";
@@ -66,16 +82,9 @@
 		}
 
 		.topbar {
-			position: fixed;
-			top: 0;
-			left: 0;
-			right: 0;
-			z-index: 10;
-			height: 68px;
-			padding: 0 40px;
-			display: flex;
-			align-items: center;
-			justify-content: space-between;
+			position: fixed; top: 0; left: 0; right: 0; z-index: 10;
+			height: 68px; padding: 0 40px;
+			display: flex; align-items: center; justify-content: space-between;
 			background: rgba(5,0,0,.74);
 			backdrop-filter: blur(16px) saturate(1.35);
 			border-bottom: 1px solid rgba(255, 34, 34, .22);
@@ -84,323 +93,98 @@
 
 		.logo {
 			font-family: "Coolvetica", Arial, sans-serif;
-			font-size: 23px;
-			font-weight: 400;
-			letter-spacing: .015em;
-			color: white;
-			text-decoration: none;
+			font-size: 23px; font-weight: 400; letter-spacing: .015em;
+			color: white; text-decoration: none;
 			text-shadow: 0 0 16px rgba(255, 34, 34, .62), 0 2px 0 rgba(0,0,0,.55);
 		}
 
-		.nav {
-			display: flex;
-			gap: 16px;
-			align-items: center;
-		}
-
+		.nav { display: flex; gap: 16px; align-items: center; }
 		.nav a {
 			font-family: "Coolvetica", Arial, sans-serif;
-			color: rgba(255,255,255,.72);
-			text-decoration: none;
-			font-size: 16px;
-			letter-spacing: .04em;
-			padding: 9px 16px;
-			border-radius: 999px;
-			border: 1px solid transparent;
+			color: rgba(255,255,255,.72); text-decoration: none; font-size: 16px; letter-spacing: .04em;
+			padding: 9px 16px; border-radius: 999px; border: 1px solid transparent;
 			transition: transform .22s ease, color .22s ease, border-color .22s ease, background .22s ease, box-shadow .22s ease;
 		}
+		.nav a:hover { color: white; border-color: rgba(255, 44, 44, .38); background: rgba(255, 36, 36, .08); box-shadow: 0 0 22px rgba(255, 22, 22, .16); transform: translateY(-1px); }
 
-		.nav a:hover {
-			color: white;
-			border-color: rgba(255, 44, 44, .38);
-			background: rgba(255, 36, 36, .08);
-			box-shadow: 0 0 22px rgba(255, 22, 22, .16);
-			transform: translateY(-1px);
-		}
-
-		main {
-			position: relative;
-			z-index: 2;
-			min-height: 100vh;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			padding: 112px 20px 92px;
-		}
-
+		main { position: relative; z-index: 2; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 112px 20px 92px; }
 		.hero {
-			position: relative;
-			width: min(800px, 92vw);
-			text-align: center;
-			padding: 34px;
-			border-radius: 34px;
-			border: 1px solid rgba(255, 45, 45, .17);
-			background:
-				linear-gradient(145deg, rgba(255,255,255,.06), rgba(255,255,255,.018)),
-				radial-gradient(circle at 72% 18%, rgba(255, 36, 36, .20), transparent 36%),
-				rgba(12, 0, 0, .34);
+			position: relative; width: min(800px, 92vw); text-align: center; padding: 34px;
+			border-radius: 34px; border: 1px solid rgba(255, 45, 45, .17);
+			background: linear-gradient(145deg, rgba(255,255,255,.06), rgba(255,255,255,.018)), radial-gradient(circle at 72% 18%, rgba(255, 36, 36, .20), transparent 36%), rgba(12, 0, 0, .34);
 			backdrop-filter: blur(14px) saturate(1.2);
-			box-shadow:
-				0 28px 90px rgba(0,0,0,.58),
-				0 0 70px rgba(255, 0, 0, .10),
-				inset 0 1px 0 rgba(255,255,255,.08);
+			box-shadow: 0 28px 90px rgba(0,0,0,.58), 0 0 70px rgba(255, 0, 0, .10), inset 0 1px 0 rgba(255,255,255,.08);
 			overflow: hidden;
 		}
+		.hero::after { content: ""; position: absolute; inset: 1px; border-radius: inherit; pointer-events: none; background: linear-gradient(120deg, transparent 4%, rgba(255,255,255,.11) 28%, transparent 42%); opacity: .28; }
+		.hero-glow { position: absolute; width: 620px; height: 300px; background: radial-gradient(circle, rgba(255, 24, 24, .30), transparent 72%); filter: blur(22px); left: 50%; top: 33%; transform: translate(-50%, -50%); pointer-events: none; }
 
-		.hero::after {
-			content: "";
-			position: absolute;
-			inset: 1px;
-			border-radius: inherit;
-			pointer-events: none;
-			background: linear-gradient(120deg, transparent 4%, rgba(255,255,255,.11) 28%, transparent 42%);
-			opacity: .28;
-		}
+		h1 { font-family: "Coolvetica", Arial, sans-serif; font-size: clamp(42px, 7vw, 86px); font-weight: 400; line-height: .92; letter-spacing: -.035em; color: white; text-transform: lowercase; text-shadow: 0 0 14px rgba(255, 34, 34, .34), 0 0 34px rgba(255, 0, 0, .16), 0 4px 0 rgba(0,0,0,.48); margin-bottom: 16px; position: relative; z-index: 2; }
+		.subtitle { position: relative; z-index: 2; color: var(--muted); font-size: 17px; margin-bottom: 32px; }
 
-		.hero-glow {
-			position: absolute;
-			width: 620px;
-			height: 300px;
-			background: radial-gradient(circle, rgba(255, 24, 24, .30), transparent 72%);
-			filter: blur(22px);
-			left: 50%;
-			top: 33%;
-			transform: translate(-50%, -50%);
-			pointer-events: none;
-		}
-
-		h1 {
-			font-family: "Coolvetica", Arial, sans-serif;
-			font-size: clamp(42px, 7vw, 86px);
-			font-weight: 400;
-			line-height: .92;
-			letter-spacing: -.035em;
-			color: white;
-			text-transform: lowercase;
-			text-shadow: 0 0 14px rgba(255, 34, 34, .34), 0 0 34px rgba(255, 0, 0, .16), 0 4px 0 rgba(0,0,0,.48);
-			margin-bottom: 16px;
-			position: relative;
-			z-index: 2;
-		}
-
-		.subtitle {
-			position: relative;
-			z-index: 2;
-			color: var(--muted);
-			font-size: 17px;
-			margin-bottom: 32px;
-		}
-
-		#sj-form {
-			position: relative;
-			z-index: 2;
-			width: min(700px, 92vw);
-			margin: 0 auto;
-			padding: 12px;
-			border-radius: 999px;
-			border: 1px solid var(--border);
-			background:
-				radial-gradient(circle at 75% 0%, rgba(255, 34, 34, .19), transparent 38%),
-				linear-gradient(145deg, rgba(255,255,255,.075), rgba(255,255,255,.024)),
-				var(--glass);
-			backdrop-filter: blur(18px);
-			box-shadow:
-				inset 0 1px 0 rgba(255,255,255,.09),
-				0 22px 70px rgba(0,0,0,.58),
-				0 0 34px rgba(255, 0, 0, .13);
-			transition: transform .24s ease, box-shadow .24s ease, border-color .24s ease;
-		}
-
-		#sj-form:hover {
-			transform: translateY(-2px);
-			border-color: rgba(255, 44, 44, .38);
-			box-shadow:
-				inset 0 1px 0 rgba(255,255,255,.12),
-				0 28px 84px rgba(0,0,0,.66),
-				0 0 48px rgba(255, 0, 0, .20);
-		}
-
-		#sj-address {
-			width: 100%;
-			padding: 18px 24px;
-			border-radius: 999px;
-			border: 1px solid rgba(255, 42, 42, .18);
-			outline: none;
-			background:
-				linear-gradient(145deg, rgba(0,0,0,.44), rgba(70,0,0,.18));
-			color: white;
-			font-size: 16px;
-			box-shadow: inset 0 1px 18px rgba(0,0,0,.36);
-		}
-
+		#sj-form { position: relative; z-index: 2; width: min(700px, 92vw); margin: 0 auto; padding: 12px; border-radius: 999px; border: 1px solid var(--border); background: radial-gradient(circle at 75% 0%, rgba(255, 34, 34, .19), transparent 38%), linear-gradient(145deg, rgba(255,255,255,.075), rgba(255,255,255,.024)), var(--glass); backdrop-filter: blur(18px); box-shadow: inset 0 1px 0 rgba(255,255,255,.09), 0 22px 70px rgba(0,0,0,.58), 0 0 34px rgba(255, 0, 0, .13); transition: transform .24s ease, box-shadow .24s ease, border-color .24s ease; }
+		#sj-form:hover { transform: translateY(-2px); border-color: rgba(255, 44, 44, .38); box-shadow: inset 0 1px 0 rgba(255,255,255,.12), 0 28px 84px rgba(0,0,0,.66), 0 0 48px rgba(255, 0, 0, .20); }
+		#sj-address { width: 100%; padding: 18px 24px; border-radius: 999px; border: 1px solid rgba(255, 42, 42, .18); outline: none; background: linear-gradient(145deg, rgba(0,0,0,.44), rgba(70,0,0,.18)); color: white; font-size: 16px; box-shadow: inset 0 1px 18px rgba(0,0,0,.36); }
 		#sj-address::placeholder { color: rgba(255,255,255,.44); }
-
-		#sj-address:focus {
-			border-color: var(--border-hover);
-			box-shadow: 0 0 0 4px rgba(255, 28, 28, .08), inset 0 1px 18px rgba(0,0,0,.36);
-		}
-
-		#sj-error {
-			position: relative;
-			z-index: 2;
-			margin-top: 20px;
-			color: #ff6b6b;
-		}
-
-		#sj-error-code {
-			position: relative;
-			z-index: 2;
-			color: #ffaaaa;
-			white-space: pre-wrap;
-		}
+		#sj-address:focus { border-color: var(--border-hover); box-shadow: 0 0 0 4px rgba(255, 28, 28, .08), inset 0 1px 18px rgba(0,0,0,.36); }
+		#sj-error, #sj-error-code { position: relative; z-index: 2; }
+		#sj-error { margin-top: 20px; color: #ff6b6b; }
+		#sj-error-code { color: #ffaaaa; white-space: pre-wrap; }
 
 		.proxy-browser {
-			position: fixed;
-			top: 0;
-			left: 0;
-			right: 0;
-			z-index: 10000;
-			height: 74px;
-			display: none;
-			background:
-				radial-gradient(circle at 92% 0%, rgba(255, 38, 38, .34), transparent 42%),
-				radial-gradient(circle at 0% 100%, rgba(120, 0, 0, .28), transparent 52%),
-				linear-gradient(180deg, #260000 0%, #120000 42%, #050505 100%);
-			border-bottom: 1px solid rgba(255, 52, 52, .26);
-			box-shadow:
-				0 12px 34px rgba(0,0,0,.55),
-				0 0 32px rgba(255, 0, 0, .14),
-				inset 0 1px 0 rgba(255,255,255,.06);
+			position: fixed; top: 0; left: 0; right: 0; z-index: 10000;
+			height: 80px; display: none; overflow: visible;
+			background: radial-gradient(circle at 78% 0%, rgba(255, 45, 45, .34), transparent 34%), radial-gradient(circle at 8% 100%, rgba(110, 0, 0, .34), transparent 36%), var(--chrome-bg);
+			border-bottom: 1px solid var(--chrome-border);
+			box-shadow: 0 12px 34px rgba(0,0,0,.52), inset 0 1px 0 rgba(255,255,255,.055);
 			font-family: Arial, sans-serif;
 		}
-
 		body.proxy-open .proxy-browser { display: block; }
-		body.proxy-open .topbar,
-		body.proxy-open main,
-		body.proxy-open footer,
-		body.proxy-open #particles-js { display: none; }
+		body.proxy-open .topbar, body.proxy-open main, body.proxy-open footer, body.proxy-open #particles-js { display: none; }
 
-		.browser-tabs {
-			height: 34px;
-			display: flex;
-			align-items: end;
-			padding: 0 10px;
-			gap: 8px;
-		}
-
-		.browser-tab {
-			height: 30px;
-			min-width: 190px;
-			max-width: 260px;
-			display: flex;
-			align-items: center;
-			gap: 8px;
-			padding: 0 12px;
-			border-radius: 10px 10px 0 0;
-			background:
-				linear-gradient(180deg, rgba(90, 6, 6, .96), rgba(22, 0, 0, .96));
-			border-top: 1px solid rgba(255, 86, 86, .22);
-			border-left: 1px solid rgba(255, 86, 86, .14);
-			border-right: 1px solid rgba(255, 86, 86, .14);
-			color: #f5f5f5;
-			font-size: 12px;
-		}
-
-		.browser-favicon { opacity: .8; font-size: 13px; }
+		.browser-tabs { height: 38px; display: flex; align-items: end; padding: 0 10px; gap: 7px; overflow-x: auto; scrollbar-width: thin; }
+		.browser-tab { height: 31px; min-width: 150px; max-width: 240px; display: flex; align-items: center; gap: 8px; padding: 0 10px; border-radius: 11px 11px 0 0; background: rgba(42,0,0,.42); border: 1px solid rgba(255,60,60,.14); border-bottom: 0; color: rgba(255,255,255,.76); font-size: 12px; cursor: pointer; user-select: none; }
+		.browser-tab.active { background: linear-gradient(180deg, rgba(85,0,0,.72), rgba(18,0,0,.96)); color: #fff; border-color: rgba(255,80,80,.34); box-shadow: 0 -4px 24px rgba(255,0,0,.12); }
+		.browser-favicon { opacity: .9; font-size: 12px; color: #ff4545; }
 		.browser-title { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-		.browser-close { color: #aaa; font-size: 15px; cursor: pointer; line-height: 1; }
-		.browser-plus { color: #d6d6d6; font-size: 19px; line-height: 1; padding-bottom: 5px; }
+		.browser-close { color: #c9a0a0; font-size: 15px; cursor: pointer; line-height: 1; border-radius: 50%; width: 18px; height: 18px; display: grid; place-items: center; }
+		.browser-close:hover { background: rgba(255,255,255,.12); color: white; }
+		.browser-plus { width: 30px; height: 30px; border: 1px solid rgba(255,70,70,.18); border-radius: 999px; background: rgba(255,255,255,.05); color: #fff; font-size: 20px; line-height: 1; display: grid; place-items: center; margin-bottom: 2px; cursor: pointer; }
+		.browser-plus:hover { border-color: rgba(255,80,80,.45); box-shadow: 0 0 16px rgba(255,0,0,.18); }
 
-		.browser-controls {
-			height: 40px;
-			display: flex;
-			align-items: center;
-			gap: 8px;
-			padding: 6px 14px;
-			background:
-				linear-gradient(180deg, rgba(42, 0, 0, .92), rgba(8, 8, 8, .96));
-		}
+		.browser-controls { height: 42px; display: flex; align-items: center; gap: 8px; padding: 6px 12px; background: rgba(0,0,0,.20); }
+		.browser-btn { width: 30px; height: 30px; display: grid; place-items: center; border: 1px solid rgba(255,70,70,.12); border-radius: 9px; background: linear-gradient(180deg, rgba(255,40,40,.10), rgba(12,12,12,.78)); color: #eee; cursor: pointer; font-size: 17px; }
+		.browser-btn:hover { background: rgba(255,255,255,.08); color: white; border-color: rgba(255,80,80,.4); box-shadow: 0 0 16px rgba(255,0,0,.14); }
+		.browser-address { flex: 1; height: 31px; border: 1px solid rgba(255,70,70,.18); border-radius: 999px; background: linear-gradient(180deg, rgba(38,0,0,.96), rgba(11,11,11,.96)); color: white; outline: none; padding: 0 16px; font-size: 14px; box-shadow: inset 0 1px 0 rgba(255,255,255,.045), 0 0 20px rgba(255,0,0,.08); }
+		.browser-address:focus { border-color: rgba(255, 70, 70, .62); box-shadow: 0 0 0 3px rgba(255, 30, 30, .12), inset 0 1px 0 rgba(255,255,255,.045); }
+		.browser-menu { color: #f1dada; letter-spacing: 2px; padding: 0 7px; }
 
-		.browser-btn {
-			width: 28px;
-			height: 28px;
-			display: grid;
-			place-items: center;
-			border: 0;
-			border-radius: 8px;
-			background:
-				linear-gradient(180deg, rgba(255, 46, 46, .10), rgba(15, 15, 15, .86));
-			color: #f5dede;
-			border: 1px solid rgba(255, 68, 68, .14);
-			cursor: pointer;
-			font-size: 17px;
-		}
+		.proxy-frame { position: fixed; top: 80px; left: 0; width: 100vw; height: calc(100vh - 80px); border: none; z-index: 9999; background: white; display: none; }
+		.proxy-frame.active { display: block; }
 
-		.browser-btn:hover {
-			background:
-				linear-gradient(180deg, rgba(255, 54, 54, .22), rgba(25, 0, 0, .92));
-			color: white;
-			border-color: rgba(255, 80, 80, .42);
-			box-shadow: 0 0 16px rgba(255, 0, 0, .18);
-		}
+		.settings-panel { position: fixed; top: 80px; right: 14px; z-index: 10002; width: min(420px, calc(100vw - 28px)); max-height: calc(100vh - 100px); display: none; overflow: auto; padding: 16px; border: 1px solid rgba(255,60,60,.28); border-radius: 18px; background: radial-gradient(circle at 80% 0%, rgba(255,35,35,.22), transparent 30%), linear-gradient(160deg, rgba(25,0,0,.96), rgba(5,5,5,.96)); color: #fff; box-shadow: 0 24px 80px rgba(0,0,0,.62), 0 0 50px rgba(255,0,0,.13); backdrop-filter: blur(18px) saturate(1.2); }
+		.settings-panel.open { display: block; }
+		.settings-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+		.settings-header h2 { font-family: "Coolvetica", Arial, sans-serif; font-weight: 400; font-size: 26px; text-shadow: 0 0 18px rgba(255,0,0,.36); }
+		.settings-close { width: 30px; height: 30px; border-radius: 9px; border: 1px solid rgba(255,80,80,.25); background: rgba(255,255,255,.05); color: #fff; cursor: pointer; }
+		.setting-group { border-top: 1px solid rgba(255,255,255,.08); padding-top: 13px; margin-top: 13px; }
+		.setting-group h3 { font-size: 12px; text-transform: uppercase; letter-spacing: .12em; color: #ff9a9a; margin-bottom: 10px; }
+		.setting-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 0; font-size: 13px; color: rgba(255,255,255,.86); }
+		.setting-row small { display: block; color: rgba(255,255,255,.45); margin-top: 2px; }
+		.setting-row select, .setting-row input[type="text"] { width: 170px; padding: 8px 10px; border-radius: 10px; border: 1px solid rgba(255,70,70,.18); outline: none; background: rgba(10,0,0,.84); color: white; }
+		.switch { position: relative; width: 44px; height: 24px; flex: 0 0 44px; }
+		.switch input { opacity: 0; width: 0; height: 0; }
+		.slider { position: absolute; cursor: pointer; inset: 0; background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.12); transition: .2s; border-radius: 999px; }
+		.slider:before { content: ""; position: absolute; height: 18px; width: 18px; left: 2px; top: 2px; background: #ddd; transition: .2s; border-radius: 50%; }
+		.switch input:checked + .slider { background: linear-gradient(135deg, #ff3232, #740000); border-color: rgba(255,80,80,.5); box-shadow: 0 0 18px rgba(255,0,0,.25); }
+		.switch input:checked + .slider:before { transform: translateX(20px); background: #fff; }
 
-		.browser-address {
-			flex: 1;
-			height: 30px;
-			border: 1px solid rgba(255, 76, 76, .22);
-			border-radius: 999px;
-			background:
-				radial-gradient(circle at 88% 50%, rgba(255, 30, 30, .14), transparent 34%),
-				linear-gradient(180deg, rgba(35, 0, 0, .96), rgba(8, 8, 8, .96));
-			color: white;
-			outline: none;
-			padding: 0 16px;
-			font-size: 14px;
-		}
+		.stats-overlay { position: fixed; left: 12px; bottom: 12px; z-index: 10003; display: none; min-width: 245px; padding: 12px; border: 1px solid rgba(255,60,60,.25); border-radius: 14px; background: rgba(8,0,0,.86); color: #fff; font: 12px/1.45 ui-monospace, SFMono-Regular, Consolas, monospace; box-shadow: 0 16px 50px rgba(0,0,0,.55); backdrop-filter: blur(12px); }
+		.stats-overlay.show { display: block; }
+		.stats-overlay b { color: #ff6b6b; }
 
-		.browser-address:focus {
-			background:
-				radial-gradient(circle at 88% 50%, rgba(255, 36, 36, .20), transparent 36%),
-				linear-gradient(180deg, rgba(50, 0, 0, .98), rgba(10, 10, 10, .98));
-			border-color: rgba(255, 70, 70, .60);
-			box-shadow: 0 0 0 3px rgba(255, 30, 30, .12), 0 0 24px rgba(255, 0, 0, .10);
-		}
-
-		.browser-menu { color: #ffdada; letter-spacing: 2px; padding: 0 4px; }
-
-		#sj-frame {
-			position: fixed;
-			top: 74px;
-			left: 0;
-			width: 100vw;
-			height: calc(100vh - 74px);
-			border: none;
-			z-index: 9999;
-			background: white;
-		}
-
-		footer {
-			position: fixed;
-			left: 0;
-			right: 0;
-			bottom: 22px;
-			z-index: 3;
-			text-align: center;
-			font-size: 13px;
-			color: var(--muted);
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			gap: 16px;
-			flex-wrap: wrap;
-		}
-
-		footer a {
-			color: white;
-			text-decoration: none;
-			text-shadow: 0 0 14px rgba(255, 34, 34, .42);
-		}
-
+		footer { position: fixed; left: 0; right: 0; bottom: 22px; z-index: 3; text-align: center; font-size: 13px; color: var(--muted); display: flex; justify-content: center; align-items: center; gap: 16px; flex-wrap: wrap; }
+		footer a { color: white; text-decoration: none; text-shadow: 0 0 14px rgba(255, 34, 34, .42); }
 		footer a:hover { color: #ff3a3a; }
 
 		@media (max-width: 650px) {
@@ -410,21 +194,18 @@
 			.nav a { padding: 8px 10px; }
 			h1 { font-size: 64px; }
 			.hero { padding: 26px 16px; }
+			.browser-tab { min-width: 120px; }
+			.browser-address { font-size: 12px; padding: 0 10px; }
 		}
 	</style>
 </head>
 
-<body>
+<body data-theme="prism">
 	<div id="particles-js"></div>
 
 	<div class="proxy-browser" id="proxy-browser" aria-label="Proxy browser controls">
-		<div class="browser-tabs">
-			<div class="browser-tab">
-				<span class="browser-favicon">◎</span>
-				<span class="browser-title" id="browser-title">New Tab</span>
-				<span class="browser-close" id="browser-close" title="Close">×</span>
-			</div>
-			<div class="browser-plus">+</div>
+		<div class="browser-tabs" id="browser-tabs">
+			<button class="browser-plus" id="browser-plus" title="New tab" type="button">+</button>
 		</div>
 		<div class="browser-controls">
 			<button class="browser-btn" id="browser-back" title="Back" type="button">‹</button>
@@ -432,16 +213,62 @@
 			<button class="browser-btn" id="browser-reload" title="Reload" type="button">↻</button>
 			<input class="browser-address" id="browser-address" type="text" spellcheck="false" autocomplete="off" />
 			<button class="browser-btn" id="browser-home" title="Home" type="button">⌂</button>
-			<span class="browser-menu">⋮</span>
+			<button class="browser-btn" id="settings-open" title="Settings" type="button">⚙</button>
 		</div>
 	</div>
 
+	<aside class="settings-panel" id="settings-panel" aria-label="Proxy settings">
+		<div class="settings-header"><h2>settings</h2><button class="settings-close" id="settings-close" type="button">×</button></div>
+		<div class="setting-group">
+			<h3>Interface</h3>
+			<div class="setting-row"><span>Theme<small>dark, light, custom, or prism red/black</small></span><select id="theme-select"><option value="prism">Prism red/black</option><option value="dark">Dark</option><option value="light">Light</option><option value="custom">Custom</option></select></div>
+			<div class="setting-row"><span>Disable animations</span><label class="switch"><input type="checkbox" data-setting="disableAnimations"><span class="slider"></span></label></div>
+			<div class="setting-row"><span>Keyboard shortcuts</span><label class="switch"><input type="checkbox" data-setting="keyboardShortcuts" checked><span class="slider"></span></label></div>
+			<div class="setting-row"><span>Tab system</span><label class="switch"><input type="checkbox" data-setting="tabSystem" checked><span class="slider"></span></label></div>
+			<div class="setting-row"><span>Bookmarks</span><label class="switch"><input type="checkbox" data-setting="bookmarks" checked><span class="slider"></span></label></div>
+			<div class="setting-row"><span>Search history</span><label class="switch"><input type="checkbox" data-setting="searchHistory" checked><span class="slider"></span></label></div>
+		</div>
+		<div class="setting-group">
+			<h3>Search & transport</h3>
+			<div class="setting-row"><span>Search engine</span><select id="search-engine-select"><option value="https://www.google.com/search?q=%s">Google</option><option value="https://duckduckgo.com/?q=%s">DuckDuckGo</option><option value="https://search.brave.com/search?q=%s">Brave</option><option value="https://www.startpage.com/sp/search?query=%s">Startpage</option></select></div>
+			<div class="setting-row"><span>Transport selector<small>libcurl / epoxy / bare</small></span><select id="transport-select"><option value="/libcurl/index.mjs">libcurl</option><option value="/epoxy/index.mjs">epoxy</option><option value="/bare/index.mjs">bare</option></select></div>
+			<div class="setting-row"><span>Connected via Wisp/libcurl indicator</span><label class="switch"><input type="checkbox" data-setting="connectionIndicator" checked><span class="slider"></span></label></div>
+			<div class="setting-row"><span>Auto-reconnect</span><label class="switch"><input type="checkbox" data-setting="autoReconnect" checked><span class="slider"></span></label></div>
+			<div class="setting-row"><span>Prefetching</span><label class="switch"><input type="checkbox" data-setting="prefetching"><span class="slider"></span></label></div>
+		</div>
+		<div class="setting-group">
+			<h3>Performance & privacy</h3>
+			<div class="setting-row"><span>Performance mode</span><label class="switch"><input type="checkbox" data-setting="performanceMode"><span class="slider"></span></label></div>
+			<div class="setting-row"><span>Loading speed indicators</span><label class="switch"><input type="checkbox" data-setting="loadIndicators" checked><span class="slider"></span></label></div>
+			<div class="setting-row"><span>FPS counter</span><label class="switch"><input type="checkbox" data-setting="fpsCounter" checked><span class="slider"></span></label></div>
+			<div class="setting-row"><span>Debug stats overlay</span><label class="switch"><input type="checkbox" data-setting="debugOverlay" checked><span class="slider"></span></label></div>
+			<div class="setting-row"><span>Toggle ad blocking</span><label class="switch"><input type="checkbox" data-setting="adBlocking"><span class="slider"></span></label></div>
+			<div class="setting-row"><span>Toggle image loading</span><label class="switch"><input type="checkbox" data-setting="imageLoading" checked><span class="slider"></span></label></div>
+			<div class="setting-row"><span>Cache controls</span><label class="switch"><input type="checkbox" data-setting="cacheControls" checked><span class="slider"></span></label></div>
+		</div>
+		<div class="setting-group">
+			<h3>Status monitor</h3>
+			<div class="setting-row"><span>Proxy health monitor</span><label class="switch"><input type="checkbox" data-setting="healthMonitor" checked><span class="slider"></span></label></div>
+			<div class="setting-row"><span>Current backend/server status</span><label class="switch"><input type="checkbox" data-setting="backendStatus" checked><span class="slider"></span></label></div>
+			<div class="setting-row"><span>Server region display</span><label class="switch"><input type="checkbox" data-setting="serverRegion" checked><span class="slider"></span></label></div>
+			<div class="setting-row"><span>Page load timer</span><label class="switch"><input type="checkbox" data-setting="pageLoadTimer" checked><span class="slider"></span></label></div>
+			<div class="setting-row"><span>Network request count</span><label class="switch"><input type="checkbox" data-setting="requestCounter" checked><span class="slider"></span></label></div>
+			<div class="setting-row"><span>Service worker status</span><label class="switch"><input type="checkbox" data-setting="serviceWorkerStatus" checked><span class="slider"></span></label></div>
+		</div>
+		<div class="setting-group">
+			<h3>About</h3>
+			<div class="setting-row"><span>Status</span><strong id="settings-status">online</strong></div>
+			<div class="setting-row"><span>Ping</span><strong id="settings-ping">-- ms</strong></div>
+			<div class="setting-row"><span>Transport</span><strong id="settings-transport">libcurl</strong></div>
+			<div class="setting-row"><span>VPS load</span><strong id="settings-load">browser-side</strong></div>
+		</div>
+	</aside>
+
+	<div class="stats-overlay" id="stats-overlay"></div>
+
 	<header class="topbar">
 		<a href="/" class="logo">prism's proxy</a>
-		<nav class="nav">
-			<a href="https://prisms.lol">Games</a>
-			<a href="/">Proxy</a>
-		</nav>
+		<nav class="nav"><a href="https://prisms.lol">Games</a><a href="/">Proxy</a></nav>
 	</header>
 
 	<main>
@@ -449,22 +276,15 @@
 			<div class="hero-glow"></div>
 			<h1>prism's proxy</h1>
 			<p class="subtitle">search or enter a URL below</p>
-
 			<form id="sj-form">
 				<input id="sj-search-engine" value="https://www.google.com/search?q=%s" type="hidden" />
 				<input id="sj-address" type="text" placeholder="search or enter a website..." />
 			</form>
-
-			<p id="sj-error"></p>
-			<pre id="sj-error-code"></pre>
+			<p id="sj-error"></p><pre id="sj-error-code"></pre>
 		</section>
 	</main>
 
-	<footer>
-		<a href="https://prisms.lol">Games</a>
-		<a href="/">Proxy</a>
-		<span>prism's proxy © 2026</span>
-	</footer>
+	<footer><a href="https://prisms.lol">Games</a><a href="/">Proxy</a><span>prism's proxy © 2026</span></footer>
 
 	<script src="register-sw.js"></script>
 	<script src="search.js"></script>
@@ -472,20 +292,8 @@
 	<script>
 		if (window.particlesJS) {
 			particlesJS("particles-js", {
-				particles: {
-					number: { value: 76, density: { enable: true, value_area: 900 } },
-					color: { value: "#ff2222" },
-					shape: { type: "circle" },
-					opacity: { value: 0.45, random: true },
-					size: { value: 2.2, random: true },
-					line_linked: { enable: true, distance: 135, color: "#ff2222", opacity: 0.16, width: 1 },
-					move: { enable: true, speed: 1.25, direction: "none", random: true, straight: false, out_mode: "out", bounce: false }
-				},
-				interactivity: {
-					detect_on: "canvas",
-					events: { onhover: { enable: true, mode: "grab" }, onclick: { enable: true, mode: "push" }, resize: true },
-					modes: { grab: { distance: 145, line_linked: { opacity: 0.34 } }, push: { particles_nb: 3 } }
-				},
+				particles: { number: { value: 76, density: { enable: true, value_area: 900 } }, color: { value: "#ff2222" }, shape: { type: "circle" }, opacity: { value: 0.45, random: true }, size: { value: 2.2, random: true }, line_linked: { enable: true, distance: 135, color: "#ff2222", opacity: 0.16, width: 1 }, move: { enable: true, speed: 1.25, direction: "none", random: true, straight: false, out_mode: "out", bounce: false } },
+				interactivity: { detect_on: "canvas", events: { onhover: { enable: true, mode: "grab" }, onclick: { enable: true, mode: "push" }, resize: true }, modes: { grab: { distance: 145, line_linked: { opacity: 0.34 } }, push: { particles_nb: 3 } } },
 				retina_detect: true
 			});
 		}
@@ -496,109 +304,202 @@
 		const error = document.getElementById("sj-error");
 		const errorCode = document.getElementById("sj-error-code");
 		const browserAddress = document.getElementById("browser-address");
-		const browserTitle = document.getElementById("browser-title");
+		const browserTabs = document.getElementById("browser-tabs");
+		const browserPlus = document.getElementById("browser-plus");
 		const browserBack = document.getElementById("browser-back");
 		const browserForward = document.getElementById("browser-forward");
 		const browserReload = document.getElementById("browser-reload");
 		const browserHome = document.getElementById("browser-home");
-		const browserClose = document.getElementById("browser-close");
-		let activeFrame = null;
-		let activeRawUrl = "";
+		const settingsOpen = document.getElementById("settings-open");
+		const settingsPanel = document.getElementById("settings-panel");
+		const settingsClose = document.getElementById("settings-close");
+		const statsOverlay = document.getElementById("stats-overlay");
+		const themeSelect = document.getElementById("theme-select");
+		const transportSelect = document.getElementById("transport-select");
+		const searchEngineSelect = document.getElementById("search-engine-select");
 
-		function titleFromUrl(value) {
-			try { return new URL(value).hostname.replace(/^www\./, ""); }
-			catch { return value || "New Tab"; }
+		const defaultSettings = {
+			disableAnimations: false, keyboardShortcuts: true, tabSystem: true, bookmarks: true, searchHistory: true,
+			connectionIndicator: true, autoReconnect: true, prefetching: false, performanceMode: false,
+			loadIndicators: true, fpsCounter: true, debugOverlay: true, adBlocking: false, imageLoading: true,
+			cacheControls: true, healthMonitor: true, backendStatus: true, serverRegion: true, pageLoadTimer: true,
+			requestCounter: true, serviceWorkerStatus: true, theme: "prism", transport: "/libcurl/index.mjs", searchEngine: "https://www.google.com/search?q=%s"
+		};
+		const settings = { ...defaultSettings, ...JSON.parse(localStorage.getItem("prismProxySettings") || "{}") };
+		let tabs = [];
+		let activeTabId = null;
+		let tabCounter = 0;
+		let requestCount = 0;
+		let cacheHits = 0;
+		let lastPing = null;
+		let fps = 0, fpsFrames = 0, fpsLast = performance.now();
+		let lastLoadMs = 0;
+
+		function saveSettings() { localStorage.setItem("prismProxySettings", JSON.stringify(settings)); }
+		function applySettings() {
+			document.body.dataset.theme = settings.theme || "prism";
+			document.body.classList.toggle("animations-off", !!settings.disableAnimations || !!settings.performanceMode);
+			statsOverlay.classList.toggle("show", !!settings.debugOverlay || !!settings.fpsCounter || !!settings.loadIndicators);
+			searchEngine.value = settings.searchEngine || defaultSettings.searchEngine;
+			searchEngineSelect.value = searchEngine.value;
+			transportSelect.value = settings.transport || defaultSettings.transport;
+			themeSelect.value = settings.theme || "prism";
+			document.querySelectorAll("[data-setting]").forEach(input => { input.checked = settings[input.dataset.setting] !== false; });
+			document.getElementById("settings-transport").textContent = transportName(settings.transport);
 		}
-
-		async function openProxy(rawValue) {
-			const raw = (rawValue || "").trim();
-			if (!raw) return;
-
-			try {
-				await registerSW();
-			} catch (err) {
-				error.textContent = "Failed to register service worker.";
-				errorCode.textContent = err.toString();
-				return;
-			}
-
-			const url = search(raw, searchEngine.value);
-			activeRawUrl = url;
-			browserAddress.value = url;
-			browserTitle.textContent = titleFromUrl(url);
-
-			const wispUrl =
-				(location.protocol === "https:" ? "wss" : "ws") +
-				"://" +
-				location.host +
-				"/wisp/";
-
-			if ((await connection.getTransport()) !== "/libcurl/index.mjs") {
-				await connection.setTransport("/libcurl/index.mjs", [
-					{ websocket: wispUrl },
-				]);
-			}
-
-			if (!activeFrame) {
-				activeFrame = scramjet.createFrame();
-				activeFrame.frame.id = "sj-frame";
-				document.body.appendChild(activeFrame.frame);
-			}
-
-			document.body.classList.add("proxy-open");
-			activeFrame.go(url);
+		function bindSettings() {
+			document.querySelectorAll("[data-setting]").forEach(input => input.addEventListener("change", () => { settings[input.dataset.setting] = input.checked; saveSettings(); applySettings(); }));
+			themeSelect.addEventListener("change", () => { settings.theme = themeSelect.value; saveSettings(); applySettings(); });
+			searchEngineSelect.addEventListener("change", () => { settings.searchEngine = searchEngineSelect.value; saveSettings(); applySettings(); });
+			transportSelect.addEventListener("change", () => { settings.transport = transportSelect.value; saveSettings(); applySettings(); });
 		}
-
-		function closeProxy() {
-			document.body.classList.remove("proxy-open");
-			if (activeFrame?.frame) {
-				activeFrame.frame.remove();
-			}
-			activeFrame = null;
-			activeRawUrl = "";
-		}
+		function transportName(path) { return path?.includes("epoxy") ? "epoxy" : path?.includes("bare") ? "bare" : "libcurl"; }
+		function titleFromUrl(value) { try { return new URL(value).hostname.replace(/^www\./, ""); } catch { return value || "New Tab"; } }
+		function activeTab() { return tabs.find(t => t.id === activeTabId) || null; }
 
 		const { ScramjetController } = $scramjetLoadController();
-
-		const scramjet = new ScramjetController({
-			files: {
-				wasm: "/scram/scramjet.wasm.wasm",
-				all: "/scram/scramjet.all.js",
-				sync: "/scram/scramjet.sync.js",
-			},
-		});
-
+		const scramjet = new ScramjetController({ files: { wasm: "/scram/scramjet.wasm.wasm", all: "/scram/scramjet.all.js", sync: "/scram/scramjet.sync.js" } });
 		scramjet.init();
-
 		const connection = new BareMux.BareMuxConnection("/baremux/worker.js");
 
-		form.addEventListener("submit", (event) => {
-			event.preventDefault();
-			openProxy(address.value);
-		});
-
-		browserAddress.addEventListener("keydown", (event) => {
-			if (event.key === "Enter") {
-				event.preventDefault();
-				openProxy(browserAddress.value);
+		async function setTransport() {
+			const wispUrl = (location.protocol === "https:" ? "wss" : "ws") + "://" + location.host + "/wisp/";
+			const transport = settings.transport || "/libcurl/index.mjs";
+			try {
+				if ((await connection.getTransport()) !== transport) await connection.setTransport(transport, [{ websocket: wispUrl }]);
+			} catch (err) {
+				if (settings.autoReconnect) await connection.setTransport("/libcurl/index.mjs", [{ websocket: wispUrl }]);
 			}
-		});
+		}
 
-		browserBack.addEventListener("click", () => {
-			try { activeFrame?.frame?.contentWindow?.history?.back(); } catch {}
-		});
+		async function openProxy(rawValue, existingTab = null) {
+			const raw = (rawValue || "").trim();
+			if (!raw) return;
+			const start = performance.now();
+			try { await registerSW(); } catch (err) { error.textContent = "Failed to register service worker."; errorCode.textContent = err.toString(); return; }
+			const url = search(raw, settings.searchEngine || searchEngine.value);
+			await setTransport();
+			let tab = existingTab || activeTab();
+			if (!tab) tab = createTab(url, false);
+			tab.rawUrl = url; tab.title = titleFromUrl(url); tab.history.push(url); tab.historyIndex = tab.history.length - 1;
+			browserAddress.value = url;
+			if (settings.searchHistory) saveHistory(url);
+			requestCount++;
+			if (!tab.frame) {
+				const frame = scramjet.createFrame();
+				frame.frame.className = "proxy-frame";
+				frame.frame.dataset.tabId = tab.id;
+				document.body.appendChild(frame.frame);
+				tab.frame = frame;
+				frame.frame.addEventListener("load", () => { lastLoadMs = Math.round(performance.now() - start); updateTabTitle(tab.id); });
+			}
+			document.body.classList.add("proxy-open");
+			switchTab(tab.id);
+			tab.frame.go(url);
+			renderTabs();
+		}
 
-		browserForward.addEventListener("click", () => {
-			try { activeFrame?.frame?.contentWindow?.history?.forward(); } catch {}
-		});
+		function createTab(url = "https://www.google.com", openImmediately = true) {
+			const tab = { id: "tab-" + (++tabCounter), title: titleFromUrl(url), rawUrl: url, frame: null, history: [], historyIndex: -1 };
+			tabs.push(tab);
+			activeTabId = tab.id;
+			renderTabs();
+			if (openImmediately) openProxy(url, tab);
+			return tab;
+		}
+		function switchTab(id) {
+			activeTabId = id;
+			const tab = activeTab();
+			for (const t of tabs) if (t.frame?.frame) t.frame.frame.classList.toggle("active", t.id === id);
+			browserAddress.value = tab?.rawUrl || "";
+			renderTabs();
+		}
+		function closeTab(id) {
+			const index = tabs.findIndex(t => t.id === id);
+			if (index < 0) return;
+			const [tab] = tabs.splice(index, 1);
+			if (tab.frame?.frame) tab.frame.frame.remove();
+			if (!tabs.length) return closeProxy();
+			switchTab(tabs[Math.max(0, index - 1)].id);
+		}
+		function closeProxy() {
+			document.body.classList.remove("proxy-open");
+			settingsPanel.classList.remove("open");
+			for (const tab of tabs) if (tab.frame?.frame) tab.frame.frame.remove();
+			tabs = []; activeTabId = null; renderTabs();
+		}
+		function renderTabs() {
+			browserTabs.querySelectorAll(".browser-tab").forEach(el => el.remove());
+			for (const tab of tabs) {
+				const el = document.createElement("div");
+				el.className = "browser-tab" + (tab.id === activeTabId ? " active" : "");
+				el.innerHTML = `<span class="browser-favicon">●</span><span class="browser-title"></span><span class="browser-close" title="Close">×</span>`;
+				el.querySelector(".browser-title").textContent = tab.title || "New Tab";
+				el.addEventListener("click", () => switchTab(tab.id));
+				el.querySelector(".browser-close").addEventListener("click", (e) => { e.stopPropagation(); closeTab(tab.id); });
+				browserTabs.insertBefore(el, browserPlus);
+			}
+		}
+		function updateTabTitle(id) {
+			const tab = tabs.find(t => t.id === id); if (!tab) return;
+			try { tab.title = tab.frame.frame.contentDocument?.title || titleFromUrl(tab.rawUrl); } catch { tab.title = titleFromUrl(tab.rawUrl); }
+			renderTabs();
+		}
+		function saveHistory(url) {
+			const history = JSON.parse(localStorage.getItem("prismSearchHistory") || "[]");
+			history.unshift({ url, time: new Date().toISOString() });
+			localStorage.setItem("prismSearchHistory", JSON.stringify(history.slice(0, 50)));
+		}
 
-		browserReload.addEventListener("click", () => {
-			try { activeFrame?.frame?.contentWindow?.location?.reload(); }
-			catch { if (activeRawUrl) openProxy(activeRawUrl); }
-		});
-
+		form.addEventListener("submit", (event) => { event.preventDefault(); openProxy(address.value); });
+		browserAddress.addEventListener("keydown", (event) => { if (event.key === "Enter") { event.preventDefault(); openProxy(browserAddress.value, activeTab()); } });
+		browserPlus.addEventListener("click", () => createTab("https://www.google.com", true));
+		browserBack.addEventListener("click", () => { try { activeTab()?.frame?.frame?.contentWindow?.history?.back(); } catch {} });
+		browserForward.addEventListener("click", () => { try { activeTab()?.frame?.frame?.contentWindow?.history?.forward(); } catch {} });
+		browserReload.addEventListener("click", () => { const tab = activeTab(); try { tab?.frame?.frame?.contentWindow?.location?.reload(); } catch { if (tab?.rawUrl) openProxy(tab.rawUrl, tab); } });
 		browserHome.addEventListener("click", closeProxy);
-		browserClose.addEventListener("click", closeProxy);
+		settingsOpen.addEventListener("click", () => settingsPanel.classList.toggle("open"));
+		settingsClose.addEventListener("click", () => settingsPanel.classList.remove("open"));
+
+		document.addEventListener("keydown", (event) => {
+			if (!settings.keyboardShortcuts) return;
+			if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "l") { event.preventDefault(); browserAddress.focus(); browserAddress.select(); }
+			if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "t") { event.preventDefault(); createTab("https://www.google.com", true); }
+			if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "r") { event.preventDefault(); browserReload.click(); }
+		});
+
+		async function pingBackend() {
+			const start = performance.now();
+			try { await fetch(location.origin, { method: "HEAD", cache: "no-store" }); lastPing = Math.round(performance.now() - start); document.getElementById("settings-status").textContent = "online"; }
+			catch { document.getElementById("settings-status").textContent = "offline"; lastPing = null; }
+			document.getElementById("settings-ping").textContent = lastPing == null ? "offline" : lastPing + " ms";
+			document.getElementById("settings-transport").textContent = transportName(settings.transport);
+		}
+		function fpsLoop(now) { fpsFrames++; if (now - fpsLast >= 1000) { fps = fpsFrames; fpsFrames = 0; fpsLast = now; } requestAnimationFrame(fpsLoop); }
+		function updateStats() {
+			const mem = performance.memory ? Math.round(performance.memory.usedJSHeapSize / 1048576) + " MB" : "n/a";
+			const sw = navigator.serviceWorker?.controller ? "active" : "registered/checking";
+			const transport = transportName(settings.transport);
+			const active = activeTab();
+			statsOverlay.innerHTML = `
+				<b>prism status</b><br>
+				status: ${navigator.onLine ? "online" : "offline"}<br>
+				ping: ${lastPing == null ? "--" : lastPing + "ms"}<br>
+				transport: ${transport}<br>
+				wisp/libcurl: ${settings.connectionIndicator ? "shown" : "hidden"}<br>
+				requests: ${requestCount}<br>
+				cache hit rate: ${requestCount ? Math.round((cacheHits / requestCount) * 100) : 0}%<br>
+				memory: ${mem}<br>
+				fps: ${settings.fpsCounter ? fps : "off"}<br>
+				frame load: ${lastLoadMs || "--"}ms<br>
+				service worker: ${sw}<br>
+				tab: ${active ? active.title : "none"}<br>
+				server region: local/origin<br>
+				vps load: browser-side
+			`;
+		}
+
+		bindSettings(); applySettings(); pingBackend(); requestAnimationFrame(fpsLoop); setInterval(updateStats, 500); setInterval(pingBackend, 8000);
 	</script>
 </body>
 </html>
